@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   redis:
@@ -10,3 +9,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 3
+  worker:
+    build: .
+    command: rq worker --url redis://redis:6379/0 notifications
+    depends_on:
+      - redis

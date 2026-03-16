@@ -9,7 +9,7 @@ You're building a notification service that sends emails to users. The current i
 Try sending a notification:
 
 ```bash
-time curl -X POST http://localhost:5000/notifications \
+time curl -X POST http://localhost:5858/notifications \
   -H "Content-Type: application/json" \
   -d '{"email": "test@example.com", "message": "Hello!"}'
 ```
@@ -25,7 +25,7 @@ Make `POST /notifications` return **immediately** (< 200ms) with a job ID. The a
 ### 1. Start Redis
 
 ```bash
-docker-compose up -d redis
+docker compose up -d redis
 ```
 
 ### 2. Install Dependencies
@@ -131,12 +131,12 @@ worker:
 
 ```bash
 # Should be instant!
-time curl -X POST http://localhost:5000/notifications \
+time curl -X POST http://localhost:5858/notifications \
   -H "Content-Type: application/json" \
   -d '{"email": "test@example.com", "message": "Hello!"}'
 
 # Check job status
-curl http://localhost:5000/jobs/YOUR_JOB_ID
+curl http://localhost:5858/jobs/YOUR_JOB_ID
 ```
 
 ## Success Criteria
@@ -151,7 +151,7 @@ curl http://localhost:5000/jobs/YOUR_JOB_ID
 
 | Problem | Solution |
 |---------|----------|
-| "Connection refused" to Redis | Start Redis: `docker-compose up -d redis` |
+| "Connection refused" to Redis | Start Redis: `docker compose up -d redis` |
 | Jobs stay "queued" forever | Start the worker: `rq worker ...` |
 | Worker can't import tasks | Make sure `tasks.py` is in the same directory |
 | Environment variables not found | Add `import os` and use `os.getenv()` |
